@@ -1,0 +1,23 @@
+package com.imooc.miaosha.util;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class ValidatorUtil {
+
+    private static final Pattern mobile_pattern = Pattern.compile("1\\d{10}");
+
+    public static boolean isMobile(String mobileNum){
+        if (StringUtils.isEmpty(mobileNum)){
+            return false;
+        }
+        Matcher m = mobile_pattern.matcher(mobileNum);
+        return m.matches();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isMobile("1231234124"));
+    }
+}
