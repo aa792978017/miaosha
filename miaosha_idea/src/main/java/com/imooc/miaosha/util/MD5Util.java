@@ -3,18 +3,31 @@ package com.imooc.miaosha.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+/**
+ * MD5工具类
+ * 用来做MD5加密明文密码
+ */
 public class MD5Util {
 
-    public static String md5(String src) {
-        return DigestUtils.md5Hex(src);
-    }
     //盐
     private static final String salt = "1a2b3c4d";
 
     /**
+     * DM5
+     * @param key 要做MD5的字符串
+     * @return 返回MD5加密后的字符串
+     */
+    public static String md5(String key) {
+        return DigestUtils.md5Hex(key);
+    }
+
+    /**
      * 第一次加密,获得表单密码
-     * @param inputPass
-     * @return
+     * 意义:
+     * MD5:HTTP协议在网络中是明文传输,这样可以防止明文密码在网络中传输;
+     * salt:防止通过彩虹表反查出密码;
+     * @param inputPass 明文密码
+     * @return  返回第一次加密后的密码
      */
     public static String inputPassToFormPass(String inputPass){
         String str = "" + salt.charAt(0) + salt.charAt(2) +
@@ -24,9 +37,10 @@ public class MD5Util {
 
     /**
      * 第二次加密,获得数据库密码
-     * @param formPass
-     * @param salt
-     * @return
+     * 意义:防止数据库被盗后,通过彩虹表反查出第一次加密后的密码
+     * @param formPass 前端表单提交上来的密码
+     * @param salt 随机生成的salt,会存到数据库中
+     * @return 返回第二次加密后的密码
      */
     public static String formPassToDBPass(String formPass, String salt){
         String str = "" + salt.charAt(0) + salt.charAt(2) +
@@ -34,9 +48,14 @@ public class MD5Util {
         return md5(str);
     }
 
-    //从明文密码两次加密,或得数据库密码
-    public static String inputPassToDbPass(String input, String saltDb){
-        String formPass = inputPassToFormPass(input);
+    /**
+     * 将明文密码加密为要存到数据库的密码
+     * @param inputPass 明文密码
+     * @param saltDb 随机盐,会存储到数据库中
+     * @return 存到数据库的密码
+     */
+    public static String inputPassToDbPass(String inputPass, String saltDb){
+        String formPass = inputPassToFormPass(inputPass);
         String dbPass = formPassToDBPass(formPass, saltDb);
         return dbPass;
     }

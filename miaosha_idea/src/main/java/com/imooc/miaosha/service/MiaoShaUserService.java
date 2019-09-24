@@ -66,12 +66,12 @@ public class MiaoShaUserService {
 
     /**
      * 进行登录检验:通过数据库检索判断账号密码是否正确
-     * @param response
-     * @param loginVo
-     * @return
+     * @param response Http响应实体类
+     * @param loginVo 前端传过来的账号秘密实体类
+     * @return 返回登录结果
      */
     public String login(HttpServletResponse response, LoginVo loginVo){
-        if(loginVo == null){  //账号信息为空
+        if(loginVo == null){  //账号信息为空,返回服务端异常
             throw new GlobalException( CodeMsg.SERVER_ERROR);
         }
         String mobile = loginVo.getMobile();

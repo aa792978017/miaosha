@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 
-
+/**
+ * 登录接口
+ */
 @Controller
 @RequestMapping("/login")
 public class LoginController {
